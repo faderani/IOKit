@@ -21,10 +21,19 @@ typedef struct {
 
 IONotificationPortRef notificationPort = NULL;
 
+
+
+
+
+
+    
+
+
+
+
 void DeviceNotification (void *refCon , io_service_t service , natural_t messageType , void *messageArgument) {
     MyDriverData *driverData = (MyDriverData*)refCon;
     kern_return_t kr;
-    
     
     
     
@@ -45,8 +54,8 @@ void DeviceAdded (void* refCon , io_iterator_t iter) {
     
     io_service_t service = 0;
     
+    
     while ((service = IOIteratorNext(iter)) != 0 ) {
-        
         MyDriverData *driverData;
         kern_return_t kr;
         
@@ -54,8 +63,10 @@ void DeviceAdded (void* refCon , io_iterator_t iter) {
         driverData->service = service;
         
         
+        
         kr = IOServiceAddInterestNotification(notificationPort, service, kIOGeneralInterest, DeviceNotification, driverData, &driverData->notification);
 
+        IORegistryEntrySetCFProperty(service, CFSTR("StopMessage"), CFSTR("driver has stopped"));
         
         CFStringRef className;
         io_name_t name;
@@ -64,14 +75,18 @@ void DeviceAdded (void* refCon , io_iterator_t iter) {
         
         className = IOObjectCopyClass(service);
         
-        if(CFEqual(className, CFSTR("IOUSBDevice"))) {
+   //     if(CFEqual(className, CFSTR("IOUSBDevice"))) {
             IORegistryEntryGetName(service, name);
             std::cout<<"found device with name : "<<name<<std::endl;
 //            CFTypeRef vendorName;
 //            vendorName = IORegistryEntryCreateCFProperty(service, CFSTR("USB Vendor Name"), kCFAllocatorDefault, 0);
 //            CFShow(vendorName);
             
-        }
+ //       }
+        
+        
+        
+        
         
         CFRelease(className);
         IOObjectRelease(service);
@@ -79,6 +94,8 @@ void DeviceAdded (void* refCon , io_iterator_t iter) {
         
         
     }
+    
+    
     
     
     
@@ -95,7 +112,7 @@ int main(int argc, const char * argv[]) {
     kern_return_t kr;
 
     
-    matchingDict = IOServiceMatching("IOUSBDevice");
+    matchingDict = IOServiceMatching("com_osxkernel_driver_IOKitTest");
     notificationPort = IONotificationPortCreate(kIOMasterPortDefault);
     runLoopSource = IONotificationPortGetRunLoopSource(notificationPort);
     CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopDefaultMode);
@@ -105,6 +122,9 @@ int main(int argc, const char * argv[]) {
     kr = IOServiceAddMatchingNotification(notificationPort, kIOFirstMatchNotification, matchingDict, DeviceAdded, NULL, &iter);
     
     DeviceAdded(NULL, iter);
+    
+    
+   
     
     CFRunLoopRun();
     
