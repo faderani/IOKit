@@ -25,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		340079331F2916360046A3EF /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		34D41D501F2649E700730279 /* driverIterator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = driverIterator; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D41D531F2649E700730279 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		34D41D5B1F264C8300730279 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -65,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				34D41D531F2649E700730279 /* main.cpp */,
+				340079331F2916360046A3EF /* Common.h */,
 			);
 			path = driverIterator;
 			sourceTree = "<group>";
@@ -267,6 +269,7 @@
 				34D41D591F2649E700730279 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
